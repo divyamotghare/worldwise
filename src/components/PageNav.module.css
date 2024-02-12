@@ -7,3 +7,7 @@
   justify-content: space-between;
   list-style: none;
 }
+
+:global(.active) {
+  background-color: green;
+}
