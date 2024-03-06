@@ -16,8 +16,8 @@ import { CitiesProvider } from "./Contexts/citiesContext";
 function App() {
   return (
     <div>
-      <CitiesProvider>
-        <BrowserRouter>
+      <BrowserRouter>
+        <CitiesProvider>
           <Routes>
             <Route index element={<HomePage />} />
             <Route path="product" element={<Product />} />
@@ -32,8 +32,8 @@ function App() {
             </Route>
             <Route path="*" element={<PageNotFound />} />
           </Routes>
-        </BrowserRouter>
-      </CitiesProvider>
+        </CitiesProvider>
+      </BrowserRouter>
     </div>
   );
 }
