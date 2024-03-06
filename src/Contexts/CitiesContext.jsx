@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import { createContext, useState, useEffect } from "react";
 
 const BASE_URL = "http://localhost:8000";
 
-const CitiesContext = createContext();
+export const CitiesContext = createContext();
 
 function CitiesProvider({ children }) {
   const [cities, setCities] = useState([]);
@@ -25,22 +24,15 @@ function CitiesProvider({ children }) {
     fetchCities();
   }, []);
   return (
-    <CitiesProvider
+    <CitiesContext.Provider
       value={{
         cities,
         isLoading,
       }}
     >
       {children}
-    </CitiesProvider>
+    </CitiesContext.Provider>
   );
 }
 
-function useCities() {
-  const context = useContext(CitiesContext);
-  if (context === undefined)
-    throw new Error("CitiesContext is used outside the CitiesProvider");
-  return context;
-}
-
-export { CitiesProvider, useCities };
+export { CitiesProvider };
