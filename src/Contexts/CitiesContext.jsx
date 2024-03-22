@@ -20,17 +20,19 @@ function reducer(state, action) {
 
     case "city/loaded":
       return { ...state, isLoading: false, currentCity: action.payload };
-    case "cities/created":
+    case "city/created":
       return {
         ...state,
         isLoading: false,
         cities: [...state.cities, action.payload],
+        currentCity: action.payload,
       };
-    case "cities/deleted":
+    case "city/deleted":
       return {
         ...state,
         isLoading: false,
         cities: state.cities.filer((city) => city.id !== action.payload),
+        currentCity: {},
       };
     case "rejected":
       return { ...state, isLoading: false, error: action.payload };
@@ -40,10 +42,6 @@ function reducer(state, action) {
 }
 
 function CitiesProvider({ children }) {
-  // const [cities, setCities] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  // const [currentCity, setCurrentCity] = useState({});
-
   const [{ cities, isLoading, currentCity }, dispatch] = useReducer(
     reducer,
     initialState
@@ -67,6 +65,7 @@ function CitiesProvider({ children }) {
   }, []);
 
   async function getCity(id) {
+    if (Number(id) === currentCity.id) return;
     dispatch({ type: "loading" });
     try {
       const res = await fetch(`${BASE_URL}/cities/${id}`);
@@ -93,7 +92,7 @@ function CitiesProvider({ children }) {
       });
       const data = await res.json();
 
-      dispatch({ type: cities / created, payload: data });
+      dispatch({ type: "city/created", payload: data });
     } catch {
       dispatch({
         type: "rejected",
@@ -109,7 +108,7 @@ function CitiesProvider({ children }) {
         method: "DELETE",
       });
 
-      dispatch({ type: "cities/deleted", payload: id });
+      dispatch({ type: "city/deleted", payload: id });
     } catch {
       dispatch({
         type: "rejected",
@@ -123,6 +122,7 @@ function CitiesProvider({ children }) {
         cities,
         isLoading,
         currentCity,
+        error,
         getCity,
         createCity,
         deleteCity,
