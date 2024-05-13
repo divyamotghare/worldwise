@@ -19,7 +19,6 @@ import Button from "./Button";
 import { useUrlPosition } from "../hooks/useUrlPosition";
 
 function Map() {
-  const navigate = useNavigate();
   const { cities } = useCities();
   const [mapPosition, setMapPosition] = useState([40, 0]);
   const {
@@ -44,8 +43,14 @@ function Map() {
     },
     [geoLocationPosition]
   );
+
+  // function onMapClick() {
+  //   const [lat, lng] = getPosition();
+  //    navigate({ pathname: "form", search: { lat, lng } });
+  //   navigate(`form?lat=${lat}&lng=${lng}`);
+  // }
   return (
-    <div className={styles.mapContainer} onClick={() => navigate("form")}>
+    <div className={styles.mapContainer}>
       {!geoLocationPosition && (
         <Button type="position" onClick={getPosition}>
           {isLoadingPosition ? "Loading..." : "Use your position"}
